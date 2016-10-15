@@ -1,6 +1,7 @@
 package com.example.michus.vidas;
 
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static android.R.attr.fragment;
 import static android.R.attr.id;
+import static com.example.michus.vidas.R.id.content_vidas;
 
 
 /**
@@ -42,18 +45,20 @@ public class VidasFragment extends Fragment {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()== R.id.action_settings) reset();
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_vidas,menu);
     }
 
-    private void reset() {
-        vida=20;
-        vida2=20;
-        veneno=0;
-        veneno2=0;
-        pantalla1.setText(vida+"/"+veneno);
-        pantalla2.setText(vida2+"/"+veneno2);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_settings) {
+            reset();
+            Snackbar.make(getView(), "nueva partida", Snackbar.LENGTH_LONG).show();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -87,12 +92,11 @@ public class VidasFragment extends Fragment {
         robaA2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida2>0&&vida<20){
-                    vida2--;
-                    vida++;
-                    pantalla2.setText(vida2+"/"+veneno2);
-                    pantalla1.setText(vida+"/"+veneno);
-                }
+                vida2--;
+                vida++;
+                pantalla2.setText(vida2+"/"+veneno2);
+                pantalla1.setText(vida+"/"+veneno);
+
             }
         });
 
@@ -100,30 +104,29 @@ public class VidasFragment extends Fragment {
         vida1Mas.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida<20){
                     vida++;
                     pantalla1.setText(vida+"/"+veneno);
-                }
+
             }
         });
 
         vida1Menos.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida>0){
-                    vida--;
-                    pantalla1.setText(vida+"/"+veneno);
-                }
+                vida--;
+                pantalla1.setText(vida+"/"+veneno);
+
             }
         });
 
         veneno1Mas.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (veneno<20){
+                if (veneno<10){
                     veneno++;
                     pantalla1.setText(vida+"/"+veneno);
                 }
+                if (veneno==10)Snackbar.make(getView(),"Te han envenenado ya no puedes continuar",Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -143,41 +146,39 @@ public class VidasFragment extends Fragment {
         robaA1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida>0&&vida2<20){
-                    vida--;
-                    vida2++;
-                    pantalla1.setText(vida+"/"+veneno);
-                    pantalla2.setText(vida2+"/"+veneno2);
-                }
+                vida--;
+                vida2++;
+                pantalla1.setText(vida+"/"+veneno);
+                pantalla2.setText(vida2+"/"+veneno2);
+
             }
         });
         vida2Mas.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida2<20){
-                    vida2++;
-                    pantalla2.setText(vida2+"/"+veneno2);
-                }
+                vida2++;
+                pantalla2.setText(vida2+"/"+veneno2);
+
             }
         });
 
         vida2Menos.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (vida2>0){
-                    vida2--;
-                    pantalla2.setText(vida2+"/"+veneno2);
-                }
+                vida2--;
+                pantalla2.setText(vida2+"/"+veneno2);
+
             }
         });
 
         veneno2Mas.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (veneno2<20){
+                if (veneno2<10){
                     veneno2++;
                     pantalla2.setText(vida2+"/"+veneno2);
                 }
+                if (veneno2==10)Snackbar.make(getView(),"Te han envenenado ya no puedes continuar",Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -192,7 +193,15 @@ public class VidasFragment extends Fragment {
         });
 
 
+
         return view;
     }
-
+    public void reset() {
+        vida=20;
+        vida2=20;
+        veneno=0;
+        veneno2=0;
+        pantalla1.setText(vida+"/"+veneno);
+        pantalla2.setText(vida2+"/"+veneno2);
+    }
 }
