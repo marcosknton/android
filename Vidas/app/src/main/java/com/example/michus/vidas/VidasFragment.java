@@ -42,25 +42,11 @@ public class VidasFragment extends Fragment {
     int vida2=20;
     int veneno2=0;
 
-
-
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_vidas,menu);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_settings) {
-            reset();
-            Snackbar.make(getView(), "nueva partida", Snackbar.LENGTH_LONG).show();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,7 +112,10 @@ public class VidasFragment extends Fragment {
                     veneno++;
                     pantalla1.setText(vida+"/"+veneno);
                 }
-                if (veneno==10)Snackbar.make(getView(),"Te han envenenado ya no puedes continuar",Snackbar.LENGTH_LONG).show();
+                if (veneno==10){
+                    Snackbar.make(getView(),"jugador 1 Te han envenenado perdiste la partida",Snackbar.LENGTH_LONG).show();
+
+                }
             }
         });
 
@@ -178,7 +167,10 @@ public class VidasFragment extends Fragment {
                     veneno2++;
                     pantalla2.setText(vida2+"/"+veneno2);
                 }
-                if (veneno2==10)Snackbar.make(getView(),"Te han envenenado ya no puedes continuar",Snackbar.LENGTH_LONG).show();
+                if (veneno2==10){
+                    Snackbar.make(getView(),"jugador 2 Te han envenenado perdiste la partida",Snackbar.LENGTH_LONG).show();
+
+                }
             }
         });
 
@@ -191,11 +183,25 @@ public class VidasFragment extends Fragment {
                 }
             }
         });
-
-
-
         return view;
     }
+
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_reset, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.reset) {
+            reset();
+            Snackbar.make(getView(),"has empezado una partida nueva",Snackbar.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void reset() {
         vida=20;
         vida2=20;
@@ -204,4 +210,5 @@ public class VidasFragment extends Fragment {
         pantalla1.setText(vida+"/"+veneno);
         pantalla2.setText(vida2+"/"+veneno2);
     }
+
 }
